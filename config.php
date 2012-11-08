@@ -1,0 +1,14 @@
+<?
+$CFG=Array(
+"updateinterval"=>5,
+"sql_host"=>"localhost",
+"sql_username"=>"seanj",
+"sql_password"=>"bony211",
+"sql_db"=>"jaxboards",
+"dthemepath"=>(defined("INACP")?"../":"")."Service/Themes/Default/",
+"postmaxsize"=>50000,
+"badnamechars"=>"@[^\w']@",
+"maxfilesize"=>5*1024*1024,
+"images"=>Array("jpg","jpeg","png","gif","bmp")
+);
+?>

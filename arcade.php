@@ -1,0 +1,1 @@
+connStatus=1&lastid=1&initbar=1&gametime=1&validate=1&microone=1&id=1
