@@ -1,4 +1,4 @@
-<?
+<?php
 $PAGE->JS("softurl");
 $PAGE->JS("script",'if(!window.sharkcounter){window.sharkcounter=0;
 setInterval(function(){

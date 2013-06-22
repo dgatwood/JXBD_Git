@@ -1,4 +1,4 @@
-<?
+<?php
 $message="<h2>Jaxboards Updates!</h2><br />
 <p>JaxBoards is finally nearing the end of the beta stage, and we'd like to thank all of you who have supported us this far.</p>
 <p>There were quite a few of you who simply registered a forum and never did anything with it! Which makes us kind of sad. However, there's good news! We've been continuously updating the software over the course of 4 months now, and we are now entering the advertising phase. With the advent of per-forum moderators coming out tomorrow, We'll go ahead and push out those updates, and put more work into getting our name out there.</p>

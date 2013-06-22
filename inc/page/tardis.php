@@ -1,4 +1,4 @@
-<?
+<?php
 $PAGE->JS("softurl");
 $PAGE->JS("script",'if(!window.tardis) {window.tardis=function(){
  var i=document.getElementById("tardis"),l,t,sw=document.documentElement.clientWidth,sh=document.documentElement.clientHeight

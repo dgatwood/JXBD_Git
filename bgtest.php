@@ -9,11 +9,11 @@
 <div class='placeholder'>
 <div class='content'>
 <div id='logo'></div>
-<?
+<?php
 for($y=0;$y<3;$y++){
 ?>
 <div class='title'>Category</div>
-<?
+<?php
 for($x=0;$x<3;$x++){
 ?>
 <!-- ROW -->
@@ -22,7 +22,7 @@ for($x=0;$x<3;$x++){
 <table><tr><td class='forum_info'><h3>Title</h3><p>Description Description Description Description Description Description Description Description</p></td><td class='last_post'><h5>Latest Post:</h5><p><a href='#'>Jaxboards is looking cooler</a><br />by <a href='#'>Sean</a></p><div>Today <span class='time'>6:45pm</span></div></td></tr></table>
 </div>
 <!-- /ROW -->
-<?
+<?php
 }
 }
 ?>

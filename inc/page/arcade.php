@@ -18,10 +18,11 @@ class arcade{
     $page="";
     $yourscore=Array();
     if($USER) {
-        $DB->select("game_id,max(score) maxscore","arcade_scores","WHERE uid=".$USER['id']." GROUP BY game_id");
-        while($f=$DB->row()) $yourscore[$f['game_id']]=$f['maxscore'];
+        $result = $DB->safeselect("game_id,max(score) maxscore","arcade_scores","WHERE uid=? GROUP BY game_id", $USER['id']);
+        while($f=$DB->row($result)) $yourscore[$f['game_id']]=$f['maxscore'];
     }
-    $DB->special("SELECT g.*,m.group_id,m.display_name FROM %t g LEFT JOIN %t m ON g.leader=m.id ORDER BY g.title","arcade_games","members");
+    $DB->safespecial("SELECT g.*,m.group_id,m.display_name FROM %t g LEFT JOIN %t m ON g.leader=m.id ORDER BY g.title",
+	array("arcade_games","members"));
     while($f=$DB->row()) {
         $page.=$PAGE->meta('arcade-index-row',$f['icon'],$f['id'],$f['title'],$f['description'],$PAGE->meta('user-link',$f['leader'],$f['group_id'],$f['display_name']),JAX::pick($f['score'],'N/A'),$f['times_played'],JAX::pick($yourscore[$f['id']],'N/A'));
     }
@@ -41,11 +42,15 @@ class arcade{
         }
         return;
     }
-    $DB->select("*","arcade_games",'WHERE id='.$id);
-    $gamedata=$DB->row();
+    $result = $DB->safeselect("*","arcade_games",'WHERE id=?', $id);
+    $gamedata=$DB->row($result);
+    $DB->disposeresult($result);
     if(!$gamedata) $PAGE->location("?act=arcade");
     $SESS->location_verbose="Playing ".$gamedata['title']." in the arcade";
-    $DB->update('arcade_games',Array('times_played'=>Array('times_played+1')),'WHERE id='.$gamedata['id']);
+
+    // $DB->update('arcade_games',Array('times_played'=>Array('times_played+1')),'WHERE id='.$gamedata['id']);
+    $DB->safequery("UPDATE arcade_games SET times_played = times_played + 1 WHERE id=?", $gamedata['id']);
+
     if($JAX->b['frame']) die('<html><head></head><body style="margin:0;padding:0">'.$PAGE->SWF($gamedata['swf'],Array('width'=>$gamedata['width'].'px','height'=>$gamedata['height'].'px','flashvars'=>Array('jax_gameid'=>$id))).'</body></html>');
     else {
         $page.='<div class="gameinfo">';
@@ -67,16 +72,16 @@ class arcade{
     
     $scores=false;
     if($JAX->b['del']&&$USER['group_id']==2) {
-        $DB->delete('arcade_scores','WHERE id='.$DB->evalue($JAX->b['del']));
+        $DB->safedelete('arcade_scores','WHERE id=?', $DB->basicvalue($JAX->b['del']));
         $scores=$this->getScores($gameid);
-        $DB->update('arcade_games',Array('leader'=>$scores[0]['uid'],'score'=>$scores[0]['score']),'WHERE id='.$gameid);
+        $DB->safeupdate('arcade_games',Array('leader'=>$scores[0]['uid'],'score'=>$scores[0]['score']),'WHERE id=?', $gameid);
     }
     
     if(!$scores) $scores=$this->getScores($gameid);
     if($JAX->p['comment']) {
         foreach($scores as $f) {
             if($f['uid']==$USER['id']) {
-                $DB->update("arcade_scores",Array("comment"=>$JAX->p['comment']),"WHERE id=".$f['id']);
+                $DB->safeupdate("arcade_scores",Array("comment"=>$JAX->p['comment']),"WHERE id=?", $f['id']);
                 break;
             }
         }
@@ -105,14 +110,19 @@ class arcade{
  function getScores($gameid,$limit=10){
     global $DB;
     $r=Array();
-    $DB->special("SELECT s.*,m.display_name,m.avatar,m.id uid,m.group_id FROM %t s LEFT JOIN %t m ON s.uid=m.id WHERE game_id=".$gameid." ORDER BY s.score DESC LIMIT ".$limit,"arcade_scores","members");
+    $DB->safespecial("SELECT s.*,m.display_name,m.avatar,m.id uid,m.group_id FROM %t s LEFT JOIN %t m ON s.uid=m.id WHERE game_id=? ORDER BY s.score DESC LIMIT ?",
+	array("arcade_scores","members"),
+	$gameid,
+	$limit);
     while($f=$DB->row()) $r[]=$f;
     return $r;
  }
  function getGameData($gameid){
     global $DB;
-    $DB->select("*","arcade_games","WHERE id=".$DB->evalue($gameid));
-    return $DB->row();
+    $result = $DB->safeselect("*","arcade_games","WHERE id=?", $DB->basicvalue($gameid));
+    $retval = $DB->row($result);
+    $DB->disposeresult($result);
+    return $retval;
  }
  function buildMiniScoresTable($scores){
     global $PAGE;
@@ -129,34 +139,41 @@ class arcade{
     $score=$JAX->b['gscore'];
     $gameid=$JAX->b['jax_gameid'];
     if(!$gameid&&$JAX->b['gname']) {
-        $DB->select("id","arcade_games","WHERE gname=".$DB->evalue($JAX->b['gname']));
-        $gameid=$DB->row();
+        $result = $DB->safeselect("id","arcade_games","WHERE gname=?", $DB->basicvalue($JAX->b['gname']));
+        $gameid=$DB->row($result);
+        $DB->disposeresult($result);
+
         if($gameid) $gameid=array_shift($gameid);
         else $gameid='nope';
     }
     if($USER&&is_numeric($gameid)) {
-        $DB->select("*","arcade_games","WHERE id=".$DB->evalue($gameid));
-        $gamedata=$DB->row();
+        $result = $DB->safeselect("*","arcade_games","WHERE id=?", $DB->basicvalue($gameid));
+        $gamedata=$DB->row($result);
+        $DB->disposeresult($result);
+
         if($gamedata) {
             $query=Array("score"=>$score,"date"=>time());
             //get highest score
-            $DB->select("score","arcade_scores","WHERE game_id=".$DB->evalue($gameid)." AND uid=".$USER['id']);
-            $yourscore=$DB->row();
+            $result = $DB->safeselect("score","arcade_scores","WHERE game_id=? AND uid=?",
+		$DB->basicvalue($gameid), $USER['id']);
+            $yourscore=$DB->row($result);
+            $DB->disposeresult($result);
+
             if($yourscore) {
                 if($yourscore['score']<$score) {
-                    $DB->update("arcade_scores",$query,"WHERE game_id=".$DB->evalue($gameid)." AND uid=".$USER['id']);
+                    $DB->safeupdate("arcade_scores",$query,"WHERE game_id=? AND uid=?", $DB->basicvalue($gameid), $USER['id']);
                 } //don't do anything if they've scored less than what they had before
             } else {
                 $query['game_id']=$gameid;
                 $query["uid"]=$USER['id'];
-                $DB->insert("arcade_scores",$query);
+                $DB->safeinsert("arcade_scores",$query);
             }
                 
             if($JAX->b['gscore']>$gamedata['score']) {
-                $DB->update("arcade_games",Array(
+                $DB->safeupdate("arcade_games",Array(
                     "score"=>$score,
                     "leader"=>$USER['id']
-                ),"WHERE id=".$gameid);
+                ),"WHERE id=?", $gameid);
             }
         }
     }
