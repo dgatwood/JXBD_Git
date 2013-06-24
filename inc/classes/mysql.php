@@ -309,7 +309,10 @@ function safequery_sub_array($query_string, $placeholder_number, $arrlen)
 
 	$stmt = $connection->prepare($query_string);
 	// syslog(LOG_ERR, "STMT $stmt\n");
-	if (!$stmt) return null;
+	if (!$stmt) {
+		syslog(LOG_ERR, "SAFEQUERY PREPARE FAILED FOR $query_string, ".print_r($out_args, true)."\n");
+		return null;
+	}
 
 	$refvalues = $this->refValues($out_args);
 
@@ -347,7 +350,7 @@ function safequery_sub_array($query_string, $placeholder_number, $arrlen)
 	}
 	$retval = $stmt->get_result();
 	if (!$retval) {
-		if (!preg_match("/^\s*(UPDATE|DELETE)\s/i", $query_string)) {
+		if (!preg_match("/^\s*(UPDATE|DELETE|INSERT)\s/i", $query_string)) {
 			/* This is normal for a non-SELECT query. */
 			syslog(LOG_ERR, "Result is NULL for $query_string\n");
 		}
