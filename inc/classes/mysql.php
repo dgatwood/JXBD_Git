@@ -72,7 +72,7 @@ class MySQL{
  }
 
  function safeinsert($a,$b){
-  return $this->safequery("INSERT INTO ".$this->ftable($a)." (".implode(",", array_keys($b)).") VALUES ?;",
+  return $this->safequery("INSERT INTO ".$this->ftable($a).' (`'.implode('`, `', array_keys($b)).'`) VALUES ?;',
 	array_values($b));
  }
 
@@ -118,7 +118,7 @@ class MySQL{
 
     array_unshift($va_array, $query);
 
-    // syslog(LOG_ERR, "ARRAY: ".print_r($va_array, true));
+    syslog(LOG_ERR, "ARRAY: ".print_r($va_array, true));
 
     return call_user_func_array(array($this, "safequery"), $va_array);
  }
@@ -130,7 +130,7 @@ class MySQL{
  function safeBuildUpdate($kvarray){
      if (empty($kvarray)) return "";
 
-     return implode(" = ?, ", array_keys($kvarray))." = ?"; /* e.g. if array is a => b; c => c; then result is a = ?, b = ?, where the first " = ?," comes from the implode. */
+     return '`'.implode('` = ?, `', array_keys($kvarray)).'` = ?'; /* e.g. if array is a => b; c => c; then result is a = ?, b = ?, where the first " = ?," comes from the implode. */
  }
 
  function buildUpdate($a){
