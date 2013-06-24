@@ -1,5 +1,6 @@
 <?php
 class MySQL{
+ var $lastQuery=NULL;
  var $queryList=Array();
  var $queryRuntime=Array();
  var $connected=false;
