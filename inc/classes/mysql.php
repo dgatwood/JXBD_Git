@@ -118,7 +118,7 @@ class MySQL{
 
     array_unshift($va_array, $query);
 
-    syslog(LOG_ERR, "ARRAY: ".print_r($va_array, true));
+    // syslog(LOG_ERR, "ARRAY: ".print_r($va_array, true));
 
     return call_user_func_array(array($this, "safequery"), $va_array);
  }
@@ -336,6 +336,7 @@ function safequery_sub_array($query_string, $placeholder_number, $arrlen)
 		syslog(LOG_ERR, print_r(debug_backtrace(), true));
 	    }
 	}
+	// syslog(LOG_ERR, "SAFEQUERY: $query_string, ".print_r($out_args, true));
 
 	if (!$stmt->execute()) {
 		$this->lastfailedstatement = $stmt;
