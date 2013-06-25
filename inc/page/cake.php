@@ -1,5 +1,5 @@
 <?php
 $PAGE->JS("softurl");
-$PAGE->JS("playsound","bgsound","http://jaxboards.com/Sounds/mmmitisgood.mp3");
+$PAGE->JS("playsound","bgsound",SOUNDSURL."mmmitisgood.mp3");
 
 ?>

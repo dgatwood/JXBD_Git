@@ -13,5 +13,5 @@ $PAGE->JS("script",'if(!window.tardis) {window.tardis=function(){
  }
  setInterval(window.tardis,10);}');
 $tmp=Array("drwho","drwho11","Doctor Who - Series 5 - Full Theme Music");
-$PAGE->JS("playsound","bgsound","http://jaxboards.com/Sounds/".$tmp[array_rand($tmp)].".mp3");
+$PAGE->JS("playsound","bgsound",SOUNDSURL.$tmp[array_rand($tmp)].".mp3");
 ?>

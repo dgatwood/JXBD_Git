@@ -1,5 +1,5 @@
 <?php
- $PAGE->JS("playsound","bgsound","http://jaxboards.com/Sounds/Buckwheat Boyz - Peanut Butter Jelly Time.mp3",true);
+ $PAGE->JS("playsound","bgsound",SOUNDSURL."Buckwheat Boyz - Peanut Butter Jelly Time.mp3",true);
  $PAGE->JS("script","document.body.style.backgroundImage='url(misc/peanut-butter-jelly-time.gif)';document.body.style.backgroundColor='#000';
  window.pbjt=0
  setInterval(function(){
