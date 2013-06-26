@@ -49,7 +49,7 @@ class arcade{
     $SESS->location_verbose="Playing ".$gamedata['title']." in the arcade";
 
     // $DB->update('arcade_games',Array('times_played'=>Array('times_played+1')),'WHERE id='.$gamedata['id']);
-    $DB->safequery("UPDATE arcade_games SET times_played = times_played + 1 WHERE id=?", $gamedata['id']);
+    $DB->safequery("UPDATE ".$DB->ftable(arcade_games)." SET times_played = times_played + 1 WHERE id=?", $gamedata['id']);
 
     if($JAX->b['frame']) die('<html><head></head><body style="margin:0;padding:0">'.$PAGE->SWF($gamedata['swf'],Array('width'=>$gamedata['width'].'px','height'=>$gamedata['height'].'px','flashvars'=>Array('jax_gameid'=>$id))).'</body></html>');
     else {
