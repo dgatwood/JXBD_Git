@@ -447,7 +447,7 @@ function safequery_sub_array($query_string, $placeholder_number, $arrlen)
 LEFT JOIN %t AS b ON a.uid=b.id
 WHERE last_update>=?
  ORDER BY last_action DESC",
-	array("session","members","member_groups"),
+	array("session","members" /* ,"member_groups" */),
 	(time()-$CFG['timetologout']));
   $today=date('n j');
   while($f=$this->arow($result)) {
