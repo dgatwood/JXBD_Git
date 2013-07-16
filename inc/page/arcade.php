@@ -3,7 +3,8 @@ $PAGE->metadefs['arcade-index-wrapper']='<table class="boardindex">%s</table>';
 $PAGE->metadefs['arcade-index-row']='<tr><td class="f_icon" rowspan="2"><img src="%s" alt="Icon" /></td><td class="forum" rowspan="2"><a href="?act=arcade&amp;play=%s">%s</a><div class="description">%s</div></td><td class="last_post" colspan="2">Top Score: %s - <strong>%s</strong><br /><a href="?act=arcade&amp;scores=%2$s">View all scores</a></td></tr><tr><td class="item_1">Plays: %s</td><td class="item_2">Your score: %s</td></tr>';
 new arcade;
 class arcade{
- function arcade(){$this->__construct();}
+ /* Redundant constructor unnecesary in newer PHP versions. */
+ /* function arcade(){$this->__construct();} */
  function __construct(){
     global $JAX,$SESS;
     if($JAX->b['do']=="newscore") $this->submitScore();
