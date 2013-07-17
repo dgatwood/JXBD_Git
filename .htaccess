@@ -1,6 +1,6 @@
 # AddOutputFilter INCLUDES .html
 AddType application/x-httpd-php .php
-AddType application/x-httpd-php .html
+# AddType application/x-httpd-php .html
 
 AddType text/cache-manifest .manifest
 <FilesMatch "\.(?i:epub)$">
