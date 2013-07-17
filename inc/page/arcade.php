@@ -13,7 +13,7 @@ class arcade{
     else $this->index();
  }
  function index(){
-    global $DB,$PAGE,$USER,$SESS;
+    global $DB,$PAGE,$USER,$SESS,$JAX;
     if($PAGE->jsupdate) return;
     $SESS->location_verbose="Chillin' in the Arcade";
     $page="";
@@ -25,7 +25,7 @@ class arcade{
     $DB->safespecial("SELECT g.*,m.group_id,m.display_name FROM %t g LEFT JOIN %t m ON g.leader=m.id ORDER BY g.title",
 	array("arcade_games","members"));
     while($f=$DB->row()) {
-        $page.=$PAGE->meta('arcade-index-row',$f['icon'],$f['id'],$f['title'],$f['description'],$PAGE->meta('user-link',$f['leader'],$f['group_id'],$f['display_name']),JAX::pick($f['score'],'N/A'),$f['times_played'],JAX::pick($yourscore[$f['id']],'N/A'));
+        $page.=$PAGE->meta('arcade-index-row',$f['icon'],$f['id'],$f['title'],$f['description'],$PAGE->meta('user-link',$f['leader'],$f['group_id'],$f['display_name']),$JAX->pick($f['score'],'N/A'),$f['times_played'],$JAX->pick($yourscore[$f['id']],'N/A'));
     }
     $page=$PAGE->meta('arcade-index-wrapper',$page);
     $page=$PAGE->meta('box','','Arcade',$page);
