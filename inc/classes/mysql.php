@@ -11,12 +11,7 @@ class MySQL{
  function connect($host,$user,$password,$database='',$prefix=''){
   $this->mysqli_connection = new mysqli($host, $user, $password, $database);
   if (!$this->mysqli_connection) return false;
-
-  $link=mysql_connect($host,$user,$password);
-  $this->prefix=$prefix;
-  if ($link&&$database) $this->select_db($database);
-
-  return $this->connected=$link;
+  return true;
  }
  
  function debug_mode(){
