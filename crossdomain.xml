@@ -2,4 +2,4 @@
 <!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">
 <cross-domain-policy>
 <allow-access-from domain="*.jaxboards.com" />
-</cross-domain-policy>
+</cross-domain-policy> 

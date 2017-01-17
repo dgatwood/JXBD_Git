@@ -1,14 +1,35 @@
-# AddOutputFilter INCLUDES .html
-AddType application/x-httpd-php .php
-# AddType application/x-httpd-php .html
+RewriteEngine On
 
-AddType text/cache-manifest .manifest
-<FilesMatch "\.(?i:epub)$">
-  ForceType application/octet-stream
-  Header set Content-Disposition attachment
-</FilesMatch>
-<FilesMatch "\.(?i:mobi)$">
-  ForceType application/octet-stream
-  Header set Content-Disposition attachment
-</FilesMatch>
+#RewriteCond %{HTTP_HOST} ^www\.jaxboards\.com [NC]
+#RewriteRule ^(.*) http://jaxboards.com/$1 [R=301,L]
+AddType image/x-icon .ico
 
+ErrorDocument 403 "<h2>You've been banned!</h2><br />From <i>everything</i>.<br /><br />If you think this is in error, please contact me to get unbanned. Thanks. -Admin"
+
+Options -Indexes
+
+order allow,deny
+allow from all
+#thomas
+deny from 71.50.166.135
+deny from 65.87.56.50
+
+#spam bots
+deny from 8.12.33.159
+deny from 41.190.16.17
+deny from 60.217.248.82
+deny from 79.142.66.55
+deny from 82.81.2.212
+deny from 87.254.155.79
+deny from 89.149.241.200
+deny from 89.149.197.241
+deny from 91.201.66
+deny from 92.241
+deny from 94.142.130.181
+deny from 95.31.15.58
+deny from 95.82.233.17
+deny from 95.168.183.249
+deny from 123.125.156.139
+deny from 202.108.50.69
+deny from 212.95.58.144
+deny from 212.235.107.106
